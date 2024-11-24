@@ -33,10 +33,10 @@ class Block(Basic):
     def draw(self, surface) -> None:
         pygame.draw.rect(surface, self.color, self.rect)
     
-    def collide(self):
-        # ============================================
-        # TODO: Implement an event when block collides with a ball
-        pass
+    def collide(self, blocks: list):
+        self.alive = False
+        if self in blocks:  # 블록 리스트에서 자신을 제거
+            blocks.remove(self)
 
 
 class Paddle(Basic):
@@ -68,7 +68,7 @@ class Ball(Basic):
     def collide_block(self, blocks: list):
         for block in blocks:
             if self.rect.colliderect(block.rect):  # 충돌 확인
-                block.collide()  # 블록의 collide 메서드 호출
+                block.collide(blocks)  # 블록의 collide 메서드 호출
 
                 # 가로 및 세로 거리 계산
                 vertical_distance = min(
