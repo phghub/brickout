@@ -36,14 +36,14 @@ ball_pos = (center_x, paddle_pos[1] - paddle_size[1])
 ball_fever_color = (255, 50, 0)
 ball_size = (20, 20)
 
-
 # Setting for items
 item_size = (20, 20)
+item_speed = 5
 one_more_prob = 0.3
 fever_prob = 0.1
 add_score_prob = 0.1
 paddle_long_prob = 0.1
-
+items_color = [(255,0,0),(0,0,255)] # 아이템 공 빨간색 혹은 파란색
 fever_time = 5
 
 add_score = 100
@@ -55,6 +55,7 @@ paddle_long_color = (0, 126, 255)
 
 colors = [(255, 0, 0), (255, 165, 0), (255, 255, 0)]
 collision_limit = len(colors) - 1
+ 
 
 # Total number of life.
 life = 3

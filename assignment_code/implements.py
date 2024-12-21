@@ -33,10 +33,13 @@ class Block(Basic):
     def draw(self, surface) -> None:
         pygame.draw.rect(surface, self.color, self.rect)
     
-    def collide(self, blocks: list):
+    def collide(self, blocks: list,items: list):
         self.alive = False
         if self in blocks:  # 블록 리스트에서 자신을 제거
             blocks.remove(self)
+        if random.random() < 0.2: # 20%의 확률로 아이템 생성됨
+            item_color = random.choice(config.items_color)
+            items.append(Item(item_color,self.rect.center))
 
 
 class Paddle(Basic):
@@ -65,10 +68,10 @@ class Ball(Basic):
     def draw(self, surface):
         pygame.draw.ellipse(surface, self.color, self.rect)
 
-    def collide_block(self, blocks: list):
+    def collide_block(self, blocks: list, items: list):
         for block in blocks:
             if self.rect.colliderect(block.rect):  # 충돌 확인
-                block.collide(blocks)  # 블록의 collide 메서드 호출
+                block.collide(blocks,items)  # 블록의 collide 메서드 호출
 
                 # 가로 및 세로 거리 계산
                 vertical_distance = min(
@@ -104,3 +107,16 @@ class Ball(Basic):
     
     def alive(self):
         return self.rect.bottom <= config.display_dimension[1]
+
+
+class Item(Basic):
+    def __init__(self, color: tuple, pos: tuple):
+        speed = config.ball_speed * 1.15
+        super().__init__(color, speed , pos , config.item_size)
+
+    def move(self):
+        self.rect.move_ip(0,self.speed)
+
+    def draw(self,surface):
+        pygame.draw.ellipse(surface,self.color,self.rect)
+        
