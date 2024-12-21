@@ -111,7 +111,8 @@ class Ball(Basic):
 
 class Item(Basic):
     def __init__(self, color: tuple, pos: tuple):
-        super().__init__(color,config.item_speed,pos,config.item_size)
+        speed = config.ball_speed * 1.15
+        super().__init__(color, speed , pos , config.item_size)
 
     def move(self):
         self.rect.move_ip(0,self.speed)
