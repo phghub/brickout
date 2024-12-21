@@ -1,7 +1,7 @@
 import sys
 from implements import Basic, Block, Paddle, Ball
 import config
-
+import random
 import pygame
 from pygame.locals import QUIT, Rect, K_ESCAPE, K_SPACE
 
@@ -63,12 +63,22 @@ def tick():
             ball.rect.centerx = paddle.rect.centerx
             ball.rect.bottom = paddle.rect.top
 
-        ball.collide_block(BLOCKS)
+        ball.collide_block(BLOCKS,ITEMS)
         ball.collide_paddle(paddle)
         ball.hit_wall()
         if ball.alive() == False:
             BALLS.remove(ball)
 
+    for item in ITEMS[:]:
+        item.move()
+        if item.rect.top > config.display_dimension[1]:
+            ITEMS.remove(item)
+        elif item.rect.colliderect(paddle.rect):
+            if item.color == (0,0,255):#파란색 아이템
+                pass
+            elif item.color == (255,0,0): #빨간색 아이템
+                pass
+            
 
 def main():
     global life
@@ -114,8 +124,13 @@ def main():
                 if start == True:
                     ball.move()
                 ball.draw(surface)
+                
             for block in BLOCKS:
                 block.draw(surface)
+
+            for item in ITEMS:
+                item.draw(surface)
+
 
         pygame.display.update()
         fps_clock.tick(config.fps)
