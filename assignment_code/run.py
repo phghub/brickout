@@ -20,7 +20,6 @@ BALLS = [ball1]
 life = config.life
 start = False
 
-
 def create_blocks():
     for i in range(config.num_blocks[0]):
         for j in range(config.num_blocks[1]):
@@ -68,10 +67,9 @@ def tick():
         ball.hit_wall()
         if not ball.alive():
             BALLS.remove(ball)
-            if ball.color == (0,0,255):
-                for remaining_ball in BALLS:
-                    remaining_ball.reset_size()
-            if not ball.is_item :
+            if ball.color ==(0,0,255):
+                pass
+            if not ball.is_item and len(BALLS) == 0:
                 life -=1
                 BALLS.clear()
                 ITEMS.clear()

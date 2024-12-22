@@ -67,19 +67,13 @@ class Ball(Basic):
         self.is_item = is_item
         self.original_size = config.ball_size
         
-
     def increase_size(self):
         if self.rect.width == self.original_size[0]:
             new_size = (self.rect.width * 3, self.rect.height * 3)
             center = self.rect.center
             self.rect.size = new_size
             self.rect.center = center
-
-    def reset_size(self):
-        center = self.rect.center
-        self.rect.size = self.original_size
-        self.rect.center = center
-       
+                   
     def draw(self, surface):
         pygame.draw.ellipse(surface, self.color, self.rect)
 
