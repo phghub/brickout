@@ -60,36 +60,53 @@ class Paddle(Basic):
 
 
 class Ball(Basic):
-    def __init__(self, pos: tuple = config.ball_pos):
-        super().__init__(config.ball_color, config.ball_speed, pos, config.ball_size)
+    def __init__(self, pos: tuple = config.ball_pos, color: tuple = config.ball_color, is_item: bool = False):
+        super().__init__(color, config.ball_speed, pos, config.ball_size)
         self.power = 1
         self.dir = 90 + random.randint(-45, 45)
+        self.is_item = is_item
+        self.original_size = config.ball_size
+        
 
+    def increase_size(self):
+        if self.rect.width == self.original_size[0]:
+            new_size = (self.rect.width * 3, self.rect.height * 3)
+            center = self.rect.center
+            self.rect.size = new_size
+            self.rect.center = center
+
+    def reset_size(self):
+        center = self.rect.center
+        self.rect.size = self.original_size
+        self.rect.center = center
+       
     def draw(self, surface):
         pygame.draw.ellipse(surface, self.color, self.rect)
 
     def collide_block(self, blocks: list, items: list):
-        for block in blocks:
-            if self.rect.colliderect(block.rect):  # 충돌 확인
-                block.collide(blocks,items)  # 블록의 collide 메서드 호출
+        if not self.is_item or self.color ==(0,0,255):
+            for block in blocks:
+                if self.rect.colliderect(block.rect):  # 충돌 확인
+                    block.collide(blocks,items)  # 블록의 collide 메서드 호출
 
-                # 가로 및 세로 거리 계산
-                vertical_distance = min(
-                    abs(self.rect.bottom - block.rect.top),
-                    abs(self.rect.top - block.rect.bottom)
-                )
-                horizontal_distance = min(
-                    abs(self.rect.right - block.rect.left),
-                    abs(self.rect.left - block.rect.right)
-                )
+                    # 가로 및 세로 거리 계산
+                    vertical_distance = min(
+                        abs(self.rect.bottom - block.rect.top),
+                        abs(self.rect.top - block.rect.bottom)
+                    )
+                    horizontal_distance = min(
+                        abs(self.rect.right - block.rect.left),
+                        abs(self.rect.left - block.rect.right)
+                    )
 
-                # 더 가까운 면을 기준으로 충돌 방향 반전
-                if vertical_distance < horizontal_distance:
-                    self.dir = -self.dir  # y축 반전 (가로면 충돌)
-                else:
-                    self.dir = 180 - self.dir  # x축 반전 (세로면 충돌)
+                    # 더 가까운 면을 기준으로 충돌 방향 반전
+                    if vertical_distance < horizontal_distance:
+                        self.dir = -self.dir  # y축 반전 (가로면 충돌)
+                    else:
+                        self.dir = 180 - self.dir  # x축 반전 (세로면 충돌)
 
-                break  # 한 번에 하나의 블록만 처리
+                    break  # 한 번에 하나의 블록만 처리
+            
 
 
     def collide_paddle(self, paddle: Paddle) -> None:
