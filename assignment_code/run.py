@@ -20,7 +20,6 @@ BALLS = [ball1]
 life = config.life
 start = False
 
-
 def create_blocks():
     for i in range(config.num_blocks[0]):
         for j in range(config.num_blocks[1]):
@@ -56,7 +55,7 @@ def tick():
                 start = True
             paddle.move_paddle(event)
 
-    for ball in BALLS:
+    for ball in BALLS[:]:
         if start:
             ball.move()
         else:
@@ -66,8 +65,18 @@ def tick():
         ball.collide_block(BLOCKS,ITEMS)
         ball.collide_paddle(paddle)
         ball.hit_wall()
-        if ball.alive() == False:
+        if not ball.alive():
             BALLS.remove(ball)
+            if ball.color ==(0,0,255):
+                pass
+            if not ball.is_item and len(BALLS) == 0:
+                life -=1
+                BALLS.clear()
+                ITEMS.clear()
+                if life > 0:
+                    ball1 = Ball()
+                    BALLS = [ball1]
+                    start = False
 
     for item in ITEMS[:]:
         item.move()
@@ -75,11 +84,16 @@ def tick():
             ITEMS.remove(item)
         elif item.rect.colliderect(paddle.rect):
             if item.color == (0,0,255):#파란색 아이템
-                pass
+                for ball in BALLS:
+                    ball.increase_size()
+                new_ball = Ball(item.rect.center, (0,0,255), True)
+                new_ball.increase_size()
+                BALLS.append(new_ball)
             elif item.color == (255,0,0): #빨간색 아이템
-                pass
+                new_ball = Ball(item.rect.center,(255,0,0), True)
+                BALLS.append(new_ball)
+            ITEMS.remove(item)
             
-
 def main():
     global life
     global BLOCKS
@@ -120,7 +134,7 @@ def main():
         elif all(block.alive == False for block in BLOCKS):
             surface.blit(mess_clear, (200, 400))
         else:
-            for ball in BALLS:
+            for ball in BALLS[:]:
                 if start == True:
                     ball.move()
                 ball.draw(surface)
