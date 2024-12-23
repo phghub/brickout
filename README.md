@@ -9,9 +9,9 @@
    - 파란색 공 기능: 모든 공이 현재 자리에서 3개로 증가.
 
 ## 스크린샷
-![기능 - 아이템 드롭](screenshots\itemdrop.JPG)
+![기능 - 아이템 드롭](screenshots/itemdrop.JPG)
 
-![기능 - 파란 공](screenshots\blueball.JPG)
+![기능 - 파란 공](screenshots/blueball.JPG)
 
 
 ## 설치 및 실행 방법
